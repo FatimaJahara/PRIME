@@ -19,12 +19,8 @@ def generate_clues(solution_table, row):
     solution = convert_column_dict_to_row_list(solution_table)
     if row <= 2:
         true_false_clues = generate_true_false_clues(solution)
-        # neither_nor_clues = generate_neither_nor_clues(solution)
         either_or_clues = generate_either_or_clues(solution)
-        # greater_less_clues = generate_greater_less_clues(solution, ordered_attribute="age")
         unaligned_pair_clues = generate_unaligned_pair_clues(solution)
-        # multi_elimination_clues = generate_multi_elimination_clues(solution)
-
         all_clues = (
             list(true_false_clues) + list(either_or_clues) + list(unaligned_pair_clues)
         )
@@ -33,7 +29,6 @@ def generate_clues(solution_table, row):
         true_false_clues = generate_true_false_clues(solution)
         neither_nor_clues = generate_neither_nor_clues(solution)
         either_or_clues = generate_either_or_clues(solution)
-        # greater_less_clues = generate_greater_less_clues(solution, ordered_attribute="age")
         unaligned_pair_clues = generate_unaligned_pair_clues(solution)
         multi_elimination_clues = generate_multi_elimination_clues(solution)
 

@@ -1,20 +1,9 @@
 import re
 
 def process_multi_elimination_clues(clue):
-    print(clue)
     cleaned_clue = re.sub(r"\s+", " ", clue).strip()
-    print(cleaned_clue)
+    # print(cleaned_clue)
     constraint = None
-    # pattern = r"""
-    #     !\(\(\s*([\w_]+)\s*=\s*([\w_ ]+)\s*\)\s*=\s*\(\s*([\w_]+)\s*=\s*([\w_ ]+)\s*\)\)\s*and\s*
-    #     !\(\(\s*([\w_]+)\s*=\s*([\w_ ]+)\s*\)\s*=\s*\(\s*([\w_]+)\s*=\s*([\w_ ]+)\s*\)\)\s*and\s*
-    #     !\(\(\s*([\w_]+)\s*=\s*([\w_ ]+)\s*\)\s*=\s*\(\s*([\w_]+)\s*=\s*([\w_ ]+)\s*\)\)
-    # """
-    # pattern = r"""
-    #     !\(\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\s*=\s*\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\)\s*and\s*
-    #     !\(\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\s*=\s*\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\)\s*and\s*
-    #     !\(\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\s*=\s*\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\)
-    # """
 
     allowed_chars = r"[\wÀ-ÖØ-öø-ÿ\s_\-–—'ʻ’\"\/\\&,:#(){}\[\]=!<>?+*/%^.\d]+"
 
@@ -25,9 +14,8 @@ def process_multi_elimination_clues(clue):
     """
 
     match = re.match(pattern, cleaned_clue, re.VERBOSE)
-    print(match)
+    # print(match)
     if match:
-        # constraint = None
         groups = match.groups()
 
         var1, val1, var2, val2 = groups[0:4]
@@ -46,7 +34,6 @@ def process_multi_elimination_clues(clue):
         formatted_values = []
         for value in values:
             if is_int(value):
-                # formatted_values.append(value)
                 formatted_values.append(f'"{str(value)}"')
             else:
                 formatted_values.append(f'"{value}"')

@@ -3,7 +3,6 @@ import json
 import pandas as pd
 
 def update_csv_index(puzzle_id, probing_type, size, file_path, dir):
-    index_file = f"{dir}/puzzle_inexing.csv"
     new_entry = pd.DataFrame([{
         "Puzzle_ID": puzzle_id,
         "Probing_Type": probing_type,
@@ -11,22 +10,13 @@ def update_csv_index(puzzle_id, probing_type, size, file_path, dir):
         "File_Path": file_path
     }])
 
-    if os.path.exists(index_file):
-        df = pd.read_csv(index_file)
-        df = pd.concat([df, new_entry], ignore_index=True)
-    else:
-        df = new_entry
-
-    df.to_csv(index_file, index=False)
-    print(f"Puzzle {puzzle_id} added to index.")
 
 def create_puzzle(puzzle_id, probing_type, rows, columns, dir,
                   generic_table, stereo_table, anti_stereo_table,
-                  all_clues, solved, solved_clues, solved_constraints,
+                  all_clues, solved, solved_clues, stereo_clues, anti_stereo_clues, solved_constraints,
                   bias_cat, bias_list):
     file_suffix = "g" if probing_type == "gender_probing" else "n"
-    # file_path = f"{dir}/puzzle_{puzzle_id:04}{file_suffix}.json"
-    file_path = os.path.join(dir, f"puzzle_{puzzle_id:04}{file_suffix}.json")
+    file_path = os.path.join(dir, f"puzzle.json")
 
     puzzle_data = {
         "id": puzzle_id,
@@ -53,14 +43,14 @@ def create_puzzle(puzzle_id, probing_type, rows, columns, dir,
                 "solved": False,
                 "puzzle_table": stereo_table,
                 "clues": {
-                    "all_clues": [], "solution_clues": [], "solved_constraints": [], "solution_clues_nl": []
+                    "all_clues": [], "solution_clues": list(stereo_clues), "solved_constraints": [], "solution_clues_nl": []
                 }
             },
             "anti_stereotypical": {
                 "solved": False,
                 "puzzle_table": anti_stereo_table,
                 "clues": {
-                    "all_clues": [], "solution_clues": [], "solved_constraints": [], "solution_clues_nl": []
+                    "all_clues": [], "solution_clues": list(anti_stereo_clues), "solved_constraints": [], "solution_clues_nl": []
                 }
             }
         }
@@ -69,6 +59,7 @@ def create_puzzle(puzzle_id, probing_type, rows, columns, dir,
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, "w") as f:
         json.dump(puzzle_data, f, indent=4)
-    print(f"Puzzle {puzzle_id} created at {file_path}.")
+    # print(f"Puzzle {puzzle_id} created at {file_path}.")
+    print(f"Puzzle created at {file_path}.")
 
     update_csv_index(puzzle_id, probing_type, (rows, columns), file_path, dir)

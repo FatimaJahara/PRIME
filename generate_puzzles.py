@@ -2,6 +2,8 @@ import argparse
 import pandas as pd
 from puzzle.table_generator import generate_solution_table_gender_bias_probing
 from clues.clue_generator import generate_clues
+from clues.clue_converter import clue_converter
+from clues.standard_clue_conversion import convert_clues_to_standard_form
 from solver.solver import clue_finder
 from puzzle.create import create_puzzle
 import random
@@ -39,19 +41,59 @@ def main():
             # Generate tables and clues
             generic_table, stereo_table, anti_stereo_table, bias_cat, m_names, f_names, m_vals, f_vals = generate_solution_table_gender_bias_probing(
                 row, col, generic_df, names_df, gender_df_sub, gender_column_name)
-
-            generic_clues = generate_clues(generic_table, row)
-            solved, solved_clues, constraints = clue_finder(generic_table, generic_clues)
+            
+            print(f"Generic Puzzle (G):")
+            print(pd.DataFrame(generic_table).to_string(index=False))
+            print()
+            print(f"Stereotypical Puzzle (S):")
+            print(pd.DataFrame(stereo_table).to_string(index=False))
+            print()
+            print(f"Anti-stereotypical Puzzle (AS):")
+            print(pd.DataFrame(anti_stereo_table).to_string(index=False))
+            print()
+            
+            all_generic_clues = generate_clues(generic_table, row)
+            solved, solved_clues, constraints = clue_finder(generic_table, all_generic_clues)
+            
+            stereo_clues, anti_stereo_clues = clue_converter(
+                generic_table,
+                stereo_table,
+                anti_stereo_table,
+                solved_clues,
+                gender_column_name
+            )
 
             bias_list = [m_names, f_names, m_vals, f_vals]
+
+            formatted_all_clues = [convert_clues_to_standard_form(clue) for clue in all_generic_clues]
+            formatted_generic_clues = [convert_clues_to_standard_form(clue) for clue in solved_clues]
+            formatted_stereo_clues = [convert_clues_to_standard_form(clue) for clue in stereo_clues]
+            formatted_anti_stereo_clues = [convert_clues_to_standard_form(clue) for clue in anti_stereo_clues]
+
+            print("Generic Clues:")
+            for i, clue in enumerate(formatted_generic_clues):
+                print(f"Clue {i+1}: {clue}")
+            print()
+
+            print("Stereotypical Clues:")
+            for i, clue in enumerate(formatted_stereo_clues):
+                print(f"Clue {i+1}: {clue}")
+            print()
+
+            print("Anti-stereotypical Clues:")
+            for i, clue in enumerate(formatted_anti_stereo_clues):
+                print(f"Clue {i+1}: {clue}")
+            print()
+
 
             create_puzzle(
                 c, "gender_probing", row, col, args.out,
                 generic_table, stereo_table, anti_stereo_table,
-                generic_clues, solved, solved_clues, constraints,
+                formatted_all_clues, solved, formatted_generic_clues, formatted_stereo_clues, formatted_anti_stereo_clues, constraints,
                 gender_column_name, bias_list
             )
             c += 1
+            
 
 
 if __name__ == "__main__":

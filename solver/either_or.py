@@ -4,19 +4,13 @@ def process_either_or_clues(clue):
     constraint = None
 
     cleaned_clue = re.sub(r"\s+", " ", clue).strip()
-
-    # match = re.match(r"\(\(\( (\w+) = (\w+) \) or \( (\w+) = (\w+) \)\) and !\(\( (\w+) = (\w+) \) and \( (\w+) = (\w+) \)\)\) = \( (\w+) = (\w+) \)", cleaned_clue)
-
-
-    # match = re.match(r"\(\(\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\s*or\s*\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\)\s*and\s*!\(\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\s*and\s*\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\)\)\s*=\s*\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)", cleaned_clue)
     allowed_chars = r"[\wÀ-ÖØ-öø-ÿ\s_\-–—'ʻ’\"\/\\&,:#(){}\[\]=!<>?+*/%^.\d]+"
 
     pattern = rf"\(\(\(\s*({allowed_chars})\s*=\s*({allowed_chars})\s*\)\s*or\s*\(\s*({allowed_chars})\s*=\s*({allowed_chars})\s*\)\)\s*and\s*!\(\(\s*({allowed_chars})\s*=\s*({allowed_chars})\s*\)\s*and\s*\(\s*({allowed_chars})\s*=\s*({allowed_chars})\s*\)\)\)\s*=\s*\(\s*({allowed_chars})\s*=\s*({allowed_chars})\s*\)"
     match = re.match(pattern, cleaned_clue)
-    print(match)
+    # print(match)
 
     if match:
-        # constraint = None
         var1, val1, var2, val2, var3, val3, var4, val4, target_var, target_val = match.groups()
 
         def is_int(value):
@@ -31,7 +25,6 @@ def process_either_or_clues(clue):
         formatted_values = []
         for value in values:
             if is_int(value):
-                # formatted_values.append(value)
                 formatted_values.append(f'"{str(value)}"')
             else:
                 formatted_values.append(f'"{value}"')

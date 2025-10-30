@@ -1,20 +1,15 @@
 import re
 
 def process_neither_nor_clues(clue):
-    print(clue)
+    # print(clue)
     cleaned_clue = re.sub(r"\s+", " ", clue).strip()
-    # pattern = r"\(\!\( ([\w_]+) = ([\w\s]+) \)\s+and\s+\!\( ([\w_]+) = ([\w\s]+) \)\)\s*(=|!=)\s*\( ([\w_]+) = ([\w\s]+) \)"
-    # pattern = r"\(\!\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\s+and\s+\!\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)\)\s*(=|!=)\s*\(\s*([\w\s_\-'.’\/&,:]+)\s*=\s*([\w\s_\-'.’\/&,:]+)\s*\)"
-
     allowed_chars = r"[\wÀ-ÖØ-öø-ÿ\s_\-–—'ʻ’\"\/\\&,:#(){}\[\]=!<>?+*/%^.\d]+"
 
     pattern = rf"\(\!\(\s*({allowed_chars})\s*=\s*({allowed_chars})\s*\)\s+and\s+\!\(\s*({allowed_chars})\s*=\s*({allowed_chars})\s*\)\)\s*(=|!=)\s*\(\s*({allowed_chars})\s*=\s*({allowed_chars})\s*\)"
 
     match = re.search(pattern, cleaned_clue)
-    # constraint = None
-    # clue = re.sub(r"\s+", " ", clues).strip()
     match = re.match(pattern, clue)
-    print(match)
+    # print(match)
     if match:
         var1, val1, var2, val2, operator, var3, val3 = match.groups()
 
@@ -30,7 +25,6 @@ def process_neither_nor_clues(clue):
         formatted_values = []
         for value in values:
             if is_int(value):
-                # formatted_values.append(value)
                 formatted_values.append(f'"{str(value)}"')
             else:
                 formatted_values.append(f'"{value}"')
