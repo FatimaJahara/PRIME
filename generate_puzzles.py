@@ -17,9 +17,9 @@ def main():
     parser.add_argument("--puzzle_id", type=int, default=1)
     args = parser.parse_args()
 
-    generic_df = pd.read_csv("data for puzzle generation/generic.csv")
-    names_df = pd.read_csv("data for puzzle generation/names_gender_probing.csv")
-    gender_df = pd.read_csv("data for puzzle generation/gender probing.csv", header=[0, 1])
+    generic_df = pd.read_csv("data/categories and items/generic.csv")
+    names_df = pd.read_csv("data/categories and items/names_gender_probing.csv")
+    gender_df = pd.read_csv("data/categories and items/gender probing.csv", header=[0, 1])
 
     generic_df.drop('Unnamed: 0', axis=1, inplace=True)
     gender_df.drop('Unnamed: 0_level_0', axis=1, inplace=True)
