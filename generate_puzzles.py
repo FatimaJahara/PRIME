@@ -17,6 +17,10 @@ def main():
     parser.add_argument("--puzzle_id", type=int, default=1)
     args = parser.parse_args()
 
+    if args.rows % 2 != 0:
+        print(f"Error: Number of rows must be even. You entered {args.rows}.")
+        sys.exit(1)
+
     generic_df = pd.read_csv("data/categories and items/generic.csv")
     names_df = pd.read_csv("data/categories and items/names_gender_probing.csv")
     gender_df = pd.read_csv("data/categories and items/gender probing.csv", header=[0, 1])
