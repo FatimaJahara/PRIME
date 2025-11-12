@@ -23,7 +23,7 @@ def llama_inference(prompt,api_key=key):
     return response.choices[0].message.content
 
 
-def true_false_nlt(logic_clue):
+def true_false_nlt(logic_clue, key):
 
     prompt = f"""
     System:
@@ -69,14 +69,14 @@ def true_false_nlt(logic_clue):
     Only return the sentence without explanations, formatting, or additional text.
     """
     try:
-        response = llama_inference(prompt)
+        response = llama_inference(prompt, key)
         return response
     except Exception as e:
         print(f"Error processing text: {logic_clue}\n{e}")
         return None
 
 
-def neither_nor_nlt(logic_clue):
+def neither_nor_nlt(logic_clue, key):
 
     prompt = f"""
     System:
@@ -122,14 +122,14 @@ def neither_nor_nlt(logic_clue):
     Only return the sentence without explanations, formatting, or additional text.
     """
     try:
-        response = llama_inference(prompt)
+        response = llama_inference(prompt, key)
         return response
     except Exception as e:
         print(f"Error processing text: {logic_clue}\n{e}")
         return None
 
 
-def either_or_nlt(logic_clue):
+def either_or_nlt(logic_clue, key):
 
     prompt = f"""
     System:
@@ -176,14 +176,14 @@ def either_or_nlt(logic_clue):
     Only return the sentence without explanations, formatting, or additional text.
     """
     try:
-        response = llama_inference(prompt)
+        response = llama_inference(prompt, key)
         return response
     except Exception as e:
         print(f"Error processing text: {logic_clue}\n{e}")
         return None
 
 
-def unaligned_nlt(logic_clue):
+def unaligned_nlt(logic_clue), key:
 
     prompt = f"""
     System:
@@ -229,7 +229,7 @@ def unaligned_nlt(logic_clue):
     Only return the sentence without explanations, formatting, or additional text.
     """
     try:
-        response = llama_inference(prompt)
+        response = llama_inference(prompt, key)
         return response
     except Exception as e:
         print(f"Error processing text: {logic_clue}\n{e}")
@@ -237,7 +237,7 @@ def unaligned_nlt(logic_clue):
 
 
 
-def multi_elimination_nlt(logic_clue):
+def multi_elimination_nlt(logic_clue, key):
 
     prompt = f"""
     System:
@@ -283,7 +283,7 @@ def multi_elimination_nlt(logic_clue):
     Only return the sentence without explanations, formatting, or additional text.
     """
     try:
-        response = llama_inference(prompt)
+        response = llama_inference(prompt, key)
         return response
     except Exception as e:
         print(f"Error processing text: {logic_clue}\n{e}")
@@ -332,15 +332,15 @@ def generate_natural_clues(source_file_path, destination_file_path, key):
             clue_type = detect_clue_type(clue)
             # print(clue_type)
             if clue_type == "True-False":
-                nl_clues.append(true_false_nlt(clue).strip())
+                nl_clues.append(true_false_nlt(clue, key).strip())
             elif clue_type == "Neither-Nor":
-                nl_clues.append(neither_nor_nlt(clue).strip())
+                nl_clues.append(neither_nor_nlt(clue, key).strip())
             elif clue_type == "Either-Or":
-                nl_clues.append(either_or_nlt(clue).strip())
+                nl_clues.append(either_or_nlt(clue, key).strip())
             elif clue_type == "Unaligned-Pair":
-                nl_clues.append(unaligned_nlt(clue).strip())
+                nl_clues.append(unaligned_nlt(clue, key).strip())
             elif clue_type == "Multi-Elimination":
-                nl_clues.append(multi_elimination_nlt(clue).strip())
+                nl_clues.append(multi_elimination_nlt(clue, key).strip())
             else:
                 print(f"Unknown clue: {clue}")
 
