@@ -4,10 +4,13 @@ import os
 key = os.getenv("TOGETHER_API_KEY", None)
 
 def llama_inference(prompt,api_key=key):
-    active_key = api_key or key or os.getenv("TOGETHER_API_KEY")
+    active_key = key
+    
     if not active_key:
         raise ValueError(" No Together API key provided. Use --api_key or set TOGETHER_API_KEY.")
     client = Together(api_key=active_key)
+
+    
     response = client.chat.completions.create(
     temperature=0,
     model= "meta-llama/Llama-3.3-70B-Instruct-Turbo",
