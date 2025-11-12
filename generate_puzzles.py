@@ -7,40 +7,19 @@ from clues.standard_clue_conversion import convert_clues_to_standard_form
 from solver.solver import clue_finder
 from puzzle.create import create_puzzle
 import random
+import sys
 
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--rows", type=int, required=True)
-    parser.add_argument("--cols", type=int, required=True)
-    parser.add_argument("--out", type=str, default="output/")
-    parser.add_argument("--puzzle_id", type=int, default=1)
-    args = parser.parse_args()
-
-    if args.rows % 2 != 0:
-        print(f"Error: Number of rows must be even. You entered {args.rows}.")
-        sys.exit(1)
-
-    generic_df = pd.read_csv("data/categories and items/generic.csv")
-    names_df = pd.read_csv("data/categories and items/names_gender_probing.csv")
-    gender_df = pd.read_csv("data/categories and items/gender probing.csv", header=[0, 1])
-
-    generic_df.drop('Unnamed: 0', axis=1, inplace=True)
-    gender_df.drop('Unnamed: 0_level_0', axis=1, inplace=True)
-    gender_probing_columns = set(cols[0] for cols in gender_df.columns)
-    gender_probing_columns = list(gender_probing_columns)
-    # gender_probing_columns.sort()
-
-    c = args.puzzle_id
-    no_of_rows = args.rows
-    no_of_cols = args.cols
+def generate_single_puzzle(c, row, col, gender_df, gender_probing_columns, generic_df, names_df, out_dir):
     col_name = random.choice(gender_probing_columns)
 
-    for row in [no_of_rows]:
-        for col in [no_of_cols]:
+    for row in [row]:
+        for col in [col]:
 
             gender_df_sub = gender_df[col_name]
             gender_column_name = col_name
+
+            print(f"\n--- Puzzle {c} ---")
+            print(f"Bias Probing Category: {gender_column_name}")
 
             # Generate tables and clues
             generic_table, stereo_table, anti_stereo_table, bias_cat, m_names, f_names, m_vals, f_vals = generate_solution_table_gender_bias_probing(
@@ -91,12 +70,45 @@ def main():
 
 
             create_puzzle(
-                c, "gender_probing", row, col, args.out,
+                c, "gender_probing", row, col, out_dir,
                 generic_table, stereo_table, anti_stereo_table,
                 formatted_all_clues, solved, formatted_generic_clues, formatted_stereo_clues, formatted_anti_stereo_clues, constraints,
                 gender_column_name, bias_list
             )
             c += 1
+    
+
+def main():
+    parser = argparse.ArgumentParser(description="Generate PRIME logic puzzles.")
+    parser.add_argument("--rows", type=int, required=True, help="Number of rows in the puzzle grid.")
+    parser.add_argument("--cols", type=int, required=True, help="Number of columns in the puzzle grid.")
+    parser.add_argument("--out", type=str, default="output/", help="Output directory to save puzzles.")
+    parser.add_argument("--start_id", type=int, default=1, help="Starting puzzle ID.")
+    parser.add_argument("--batch", type=int, default=1, help="Number of puzzles to generate (default: 1).")
+    args = parser.parse_args()
+
+    if args.rows % 2 != 0:
+        print(f"Error: Number of rows must be even. You entered {args.rows}.")
+        sys.exit(1)
+
+    generic_df = pd.read_csv("data/categories and items/generic.csv")
+    names_df = pd.read_csv("data/categories and items/names_gender_probing.csv")
+    gender_df = pd.read_csv("data/categories and items/gender probing.csv", header=[0, 1])
+
+    generic_df.drop('Unnamed: 0', axis=1, inplace=True)
+    gender_df.drop('Unnamed: 0_level_0', axis=1, inplace=True)
+    gender_probing_columns = set(cols[0] for cols in gender_df.columns)
+    gender_probing_columns = list(gender_probing_columns)
+    # gender_probing_columns.sort()
+
+
+    # Single or batch mode
+    if args.batch == 1:
+        generate_single_puzzle(args.start_id, args.rows, args.cols, gender_df, gender_probing_columns, generic_df, names_df, args.out)
+    else:
+        for i in range(args.batch):
+            print(f"\nGenerating puzzle {args.start_id + i}/{args.start_id + args.batch - 1}")
+            generate_single_puzzle(args.start_id + i, args.rows, args.cols, gender_df, gender_probing_columns, generic_df, names_df, args.out)
             
 
 
