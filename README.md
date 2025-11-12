@@ -119,6 +119,8 @@ python clues/convert_to_natural_language.py \
   --api_key $TOGETHER_API_KEY
 ```
 
+**Note:** Although the current implementation uses  Llama-3.3-70B-Instruct-Turbo via Together AI, you can easily swap this out for any other LLM API (e.g., OpenAI, Anthropic, Mistral, Groq, or local models). Simply modify the [convert_to_natural_language.py](https://github.com/FatimaJahara/PRIME/blob/main/clues/convert_to_natural_language.py) to call your preferred API or local inference endpoint.
+
 
 ## Citation
 We kindly request that you cite our paper if you use, build upon, or reference this codebase or dataset in your research.
