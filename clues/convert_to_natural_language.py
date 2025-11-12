@@ -295,13 +295,37 @@ def detect_clue_type(clue):
 
     allowed_chars = r"[\wÀ-ÖØ-öø-ÿ\s_\-–—'ʻ’\"\/\\&,:#(){}\[\]=!<>?+*/%^.\d]+"
 
+    # patterns = {
+    #     "True-False": rf"\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*[!=]=\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)",
+    #     "Neither-Nor": rf"\(!\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*!\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\)\s*=\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)",
+    #     "Either-Or": rf"\(\(\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*or\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\)\s*and\s*!\(\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\)\)\s*=\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)",
+    #     "Unaligned-Pair": rf"!.*?\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)",
+    #     "Multi-Elimination": rf"!.*?\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*!.*?\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*!.*?\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)"
+    # }
+    #     patterns = {
+    #     "True-False": rf"^!?(\({allowed}={allowed}\)<=>\({allowed}={allowed}\))$",
+    #     "Neither-Nor": rf"^(\(!\({allowed}={allowed}\)and!\({allowed}={allowed}\)\)<=>\({allowed}={allowed}\))$",
+    #     "Either-Or": rf"^\(\(\({allowed}={allowed}\)or\({allowed}={allowed}\)\)and!\(\({allowed}={allowed}\)and\({allowed}={allowed}\)\)\)<=>\({allowed}={allowed}\)$",
+    #     "Unaligned-Pair": rf"^!.*?<=>.*?<=>.*?<=>.*?$",
+    #     "Multi-Elimination": rf"^!.*?and!.*?and!.*?$"
+    # }
     patterns = {
-        "True-False": rf"\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*[!=]=\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)",
-        "Neither-Nor": rf"\(!\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*!\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\)\s*=\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)",
-        "Either-Or": rf"\(\(\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*or\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\)\s*and\s*!\(\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\)\)\s*=\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)",
-        "Unaligned-Pair": rf"!.*?\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)",
-        "Multi-Elimination": rf"!.*?\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*!.*?\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)\s*and\s*!.*?\(\s*{allowed_chars}\s*=\s*{allowed_chars}\s*\)"
-    }
+    # True/False: matches both positive and negated equivalence
+    "True-False": rf"^!?\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\)$",
+
+    # Neither-Nor: matches pattern like (!(A=B) and !(C=D)) <=> (E=F)
+    "Neither-Nor": rf"^!\( *{allowed_chars}= *{allowed_chars} *\) *and *!\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\)$",
+
+    # Either-Or: matches (((A=B) or (C=D)) and !((A=B) and (C=D))) <=> (E=F)
+    "Either-Or": rf"^\(\(\( *{allowed_chars}= *{allowed_chars} *\) *or *\( *{allowed_chars}= *{allowed_chars} *\)\) *and *!\(\( *{allowed_chars}= *{allowed_chars} *\) *and *\( *{allowed_chars}= *{allowed_chars} *\)\)\)<=>\( *{allowed_chars}= *{allowed_chars} *\)$",
+
+    # Unaligned-Pair: matches long negated three-pair equivalences with <=> links
+    "Unaligned-Pair": rf"^!.*?\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\).*?<=>.*?<=>.*?$",
+
+    # Multi-Elimination: matches triple negated equivalences joined by `and`
+    "Multi-Elimination": rf"^!.*?\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\) *and *!.*?\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\) *and *!.*?\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\)$"
+}
+
 
     for clue_type, pattern in patterns.items():
         if re.fullmatch(pattern, clue.replace(" ", "")):
