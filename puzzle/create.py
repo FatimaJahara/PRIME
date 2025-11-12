@@ -16,7 +16,8 @@ def create_puzzle(puzzle_id, probing_type, rows, columns, dir,
                   all_clues, solved, solved_clues, stereo_clues, anti_stereo_clues, solved_constraints,
                   bias_cat, bias_list):
     file_suffix = "g" if probing_type == "gender_probing" else "n"
-    file_path = os.path.join(dir, f"puzzle.json")
+    # file_path = os.path.join(dir, f"puzzle.json")
+    file_path = f"{dir}/puzzle_{puzzle_id:04}{file_suffix}.json"
 
     puzzle_data = {
         "id": puzzle_id,
