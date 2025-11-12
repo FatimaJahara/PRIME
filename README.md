@@ -10,7 +10,10 @@ We introduce PRIME (**P**uzzle **R**easoning for **I**mplicit Biases in **M**ode
 ```bash
 git clone https://github.com/FatimaJahara/PRIME.git
 cd PRIME
-pip install -e .
+```
+### Install dependencies
+```bash
+pip install -r requirements.txt
 ```
 
 ## Package Structure
@@ -26,8 +29,73 @@ PRIME/                                # Framework for puzzle generation and eval
 ├── puzzle/                           # Create puzzle structure
 ├── solver/                           # Logic solver for different clue types
 └── utils/                            # Normalization functions
-
 ```
 
+## Generate PRIME Puzzles
 
+```bash
+python generate_puzzles.py --rows <num_rows> --cols <num_cols> [--out <output_dir>] [--puzzle_id <id>]
+```
+**Note:** If the python command doesn’t work on your system, use python3 instead.
+  ```
+  --rows: Number of puzzle rows (must be even)
+  --cols: Number of puzzle columns
+  --out: (optional) Output directory for saving puzzles (output/ by default)
+  --puzzle_id: (optional) Starting ID for naming puzzles (default: 1)
+  ```
 
+### Example Generation
+**Generate a 4×3 puzzle (rows must be even)**
+```bash
+python generate_puzzles.py --rows 4 --cols 3
+```
+**Generate a 4×3 puzzle in a custom directory**
+```bash
+python generate_puzzles.py --rows 4 --cols 3 --out puzzles/
+```
+**Generate a 4×3 puzzle with a custom puzzle id**
+```bash
+python3 generate_puzzles.py --rows 4 --cols 3 --puzzle_id 10
+```
+
+## Output JSON Format
+```
+{
+  "id": ...,
+  "probing_type": "gender_probing",
+  "rows": ...,
+  "columns": ...,
+  "bias_probing_category": "...",
+  "bias_probing_names_male": [...],
+  "bias_probing_names_female": [...],
+  "bias_probing_values_male": [...],
+  "bias_probing_values_female": [...],
+  "versions": {
+    "generic": {
+      "solved": true,
+      "puzzle_table": {...},
+      "clues": {
+        "all_clues": [...],
+        "solution_clues": [...],
+        "solved_constraints": [...]
+      }
+    },
+    "stereotypical": { "...": "..." },
+    "anti_stereotypical": { "...": "..." }
+  }
+}
+```
+
+## Citation
+We kindly request that you cite our paper if you use, build upon, or reference this codebase or dataset in your research.
+```
+@misc{jahara2025evaluatingimplicitbiasesllm,
+      title={Evaluating Implicit Biases in LLM Reasoning through Logic Grid Puzzles}, 
+      author={Fatima Jahara and Mark Dredze and Sharon Levy},
+      year={2025},
+      eprint={2511.06160},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2511.06160}, 
+}
+```
