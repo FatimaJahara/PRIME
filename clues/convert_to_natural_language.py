@@ -361,9 +361,6 @@ def generate_natural_clues(source_file_path, destination_file_path):
         json.dump(puzzle, f, indent=4)
     print(f"Clues saved to {destination_file_path}")
 
-    else:
-        print(f"Puzzle {puzzle['id']} already has natural language clues.")
-
 def process_puzzles_in_folder(source_dir, destination_dir):
 
     for root, dirs, files in os.walk(source_dir):
