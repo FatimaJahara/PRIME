@@ -359,6 +359,21 @@ def process_puzzles_in_folder(source_dir, destination_dir):
                 destination_file_path = os.path.join(dest_folder, file)
                 generate_natural_clues(source_file_path, destination_file_path)
 
-puzzle_directory = ""
-destination_directory = ""
-process_puzzles_in_folder(puzzle_directory, destination_directory)
+# puzzle_directory = ""
+# destination_directory = ""
+# process_puzzles_in_folder(puzzle_directory, destination_directory)
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Generate natural language clues from logical clues using Llama 3.3 via Together API.")
+    parser.add_argument("--src", type=str, required=True, help="Path to the folder containing JSON puzzle files")
+    parser.add_argument("--dest", type=str, required=True, help="Output folder to save puzzles with natural-language clues")
+    parser.add_argument("--api_key", type=str, required=False, default=None, help="Together API key (optional; falls back to the script default)")
+
+    args = parser.parse_args()
+
+    if args.api_key:
+        key = args.api_key  # overwrite default if provided
+
+    process_puzzles_in_folder(args.src, args.dest)
