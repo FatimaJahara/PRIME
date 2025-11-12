@@ -343,11 +343,21 @@ def generate_natural_clues(source_file_path, destination_file_path):
                 version_data["clues"]["solution_clues_nl"] = []
                 print(f"Warning: Puzzle {puzzle['id']} version {version} did not produce the required natural language clue set.")
 
+            if version == 'generic':
+                print("Generic Clues in Natural Language Form:")
+            if version == 'stereotypical':
+                print("Stereotypical Clues in Natural Language Form:")
+            if version == 'anti_stereotypical':
+                print("Anti-stereotypical Clues in Natural Language Form:")
+            for i, clue in nl_clues:
+                print(f"{i}. {clue}")
+                
+
         os.makedirs(os.path.dirname(destination_file_path), exist_ok=True)
 
         with open(destination_file_path, "w") as f:
             json.dump(puzzle, f, indent=4)
-        # print(f"Updated puzzle file saved: {destination_file_path}")
+        print(f"Clues saved to {destination_file_path}")
 
     else:
         print(f"Puzzle {puzzle['id']} already has natural language clues.")
