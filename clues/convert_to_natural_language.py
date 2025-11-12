@@ -313,51 +313,51 @@ def generate_natural_clues(source_file_path, destination_file_path):
     with open(source_file_path, "r") as f:
         puzzle = json.load(f)
 
-    if puzzle["versions"]['generic']["clues"]["solution_clues_nl"] == []:
-        for version in ['generic', 'stereotypical', 'anti_stereotypical']:
-            nl_clues = []
-            version_data = puzzle["versions"].get(version)
-            solution = version_data["puzzle_table"]
-            soln_clues = version_data["clues"]["solution_clues"]
+    # if puzzle["versions"]['generic']["clues"]["solution_clues_nl"] == []:
+    for version in ['generic', 'stereotypical', 'anti_stereotypical']:
+        nl_clues = []
+        version_data = puzzle["versions"].get(version)
+        solution = version_data["puzzle_table"]
+        soln_clues = version_data["clues"]["solution_clues"]
 
-            for clue in soln_clues:
-                clue_type = detect_clue_type(clue)
-                # print(clue_type)
-                if clue_type == "True-False":
-                    nl_clues.append(true_false_nlt(clue).strip())
-                elif clue_type == "Neither-Nor":
-                    nl_clues.append(neither_nor_nlt(clue).strip())
-                elif clue_type == "Either-Or":
-                    nl_clues.append(either_or_nlt(clue).strip())
-                elif clue_type == "Unaligned-Pair":
-                    nl_clues.append(unaligned_nlt(clue).strip())
-                elif clue_type == "Multi-Elimination":
-                    nl_clues.append(multi_elimination_nlt(clue).strip())
-                else:
-                    print(f"Unknown clue: {clue}")
-
-
-            if len(nl_clues) == len(soln_clues):
-                version_data["clues"]["solution_clues_nl"] = list(nl_clues)
+        for clue in soln_clues:
+            clue_type = detect_clue_type(clue)
+            # print(clue_type)
+            if clue_type == "True-False":
+                nl_clues.append(true_false_nlt(clue).strip())
+            elif clue_type == "Neither-Nor":
+                nl_clues.append(neither_nor_nlt(clue).strip())
+            elif clue_type == "Either-Or":
+                nl_clues.append(either_or_nlt(clue).strip())
+            elif clue_type == "Unaligned-Pair":
+                nl_clues.append(unaligned_nlt(clue).strip())
+            elif clue_type == "Multi-Elimination":
+                nl_clues.append(multi_elimination_nlt(clue).strip())
             else:
-                version_data["clues"]["solution_clues_nl"] = []
-                print(f"Warning: Puzzle {puzzle['id']} version {version} did not produce the required natural language clue set.")
+                print(f"Unknown clue: {clue}")
 
-            if version == 'generic':
-                print("Generic Clues in Natural Language Form:")
-            if version == 'stereotypical':
-                print("Stereotypical Clues in Natural Language Form:")
-            if version == 'anti_stereotypical':
-                print("Anti-stereotypical Clues in Natural Language Form:")
-            for i, clue in nl_clues:
-                print(f"{i}. {clue}")
-                
 
-        os.makedirs(os.path.dirname(destination_file_path), exist_ok=True)
+        if len(nl_clues) == len(soln_clues):
+            version_data["clues"]["solution_clues_nl"] = list(nl_clues)
+        else:
+            version_data["clues"]["solution_clues_nl"] = []
+            print(f"Warning: Puzzle {puzzle['id']} version {version} did not produce the required natural language clue set.")
 
-        with open(destination_file_path, "w") as f:
-            json.dump(puzzle, f, indent=4)
-        print(f"Clues saved to {destination_file_path}")
+        if version == 'generic':
+            print("Generic Clues in Natural Language Form:")
+        if version == 'stereotypical':
+            print("Stereotypical Clues in Natural Language Form:")
+        if version == 'anti_stereotypical':
+            print("Anti-stereotypical Clues in Natural Language Form:")
+        for i, clue in nl_clues:
+            print(f"{i}. {clue}")
+            
+
+    os.makedirs(os.path.dirname(destination_file_path), exist_ok=True)
+
+    with open(destination_file_path, "w") as f:
+        json.dump(puzzle, f, indent=4)
+    print(f"Clues saved to {destination_file_path}")
 
     else:
         print(f"Puzzle {puzzle['id']} already has natural language clues.")
