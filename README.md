@@ -67,7 +67,7 @@ python generate_puzzles.py --rows 4 --cols 3 --batch 10
 python3 generate_puzzles.py --rows 4 --cols 3 --batch 50 --start_id 101 --out data/puzzles/
 ```
 
-## Output JSON Format
+### Output JSON Format
 ```
 {
   "id": ...,
@@ -94,6 +94,31 @@ python3 generate_puzzles.py --rows 4 --cols 3 --batch 50 --start_id 101 --out da
   }
 }
 ```
+## Generate Natural Language Clues
+This step converts logical clues into natural language clues using an LLM through the Together API.
+### Set Your Together API Key
+**Option 1 — In Colab or Python**
+```bash
+import os
+os.environ["TOGETHER_API_KEY"] = "your_together_api_key_here"
+```
+**Option 2 — In Terminal (Mac/Linux)**
+```bash
+export TOGETHER_API_KEY="tg-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+**Option 3 — In PowerShell (Windows)**
+```bash
+setx TOGETHER_API_KEY "tg-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+**Run Conversion via CLI**
+```bash
+python clues/convert_to_natural_language.py \
+  --src <source-dir> \
+  --dest <output-dir> \
+  --api_key $TOGETHER_API_KEY
+```
+
 
 ## Citation
 We kindly request that you cite our paper if you use, build upon, or reference this codebase or dataset in your research.
