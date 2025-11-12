@@ -310,19 +310,10 @@ def detect_clue_type(clue):
     #     "Multi-Elimination": rf"^!.*?and!.*?and!.*?$"
     # }
     patterns = {
-    # True/False: matches both positive and negated equivalence
     "True-False": rf"^!?\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\)$",
-
-    # Neither-Nor: matches pattern like (!(A=B) and !(C=D)) <=> (E=F)
     "Neither-Nor": rf"^!\( *{allowed_chars}= *{allowed_chars} *\) *and *!\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\)$",
-
-    # Either-Or: matches (((A=B) or (C=D)) and !((A=B) and (C=D))) <=> (E=F)
     "Either-Or": rf"^\(\(\( *{allowed_chars}= *{allowed_chars} *\) *or *\( *{allowed_chars}= *{allowed_chars} *\)\) *and *!\(\( *{allowed_chars}= *{allowed_chars} *\) *and *\( *{allowed_chars}= *{allowed_chars} *\)\)\)<=>\( *{allowed_chars}= *{allowed_chars} *\)$",
-
-    # Unaligned-Pair: matches long negated three-pair equivalences with <=> links
     "Unaligned-Pair": rf"^!.*?\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\).*?<=>.*?<=>.*?$",
-
-    # Multi-Elimination: matches triple negated equivalences joined by `and`
     "Multi-Elimination": rf"^!.*?\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\) *and *!.*?\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\) *and *!.*?\( *{allowed_chars}= *{allowed_chars} *\)<=>\( *{allowed_chars}= *{allowed_chars} *\)$"
 }
 
@@ -338,14 +329,10 @@ import os
 import json
 
 def generate_natural_clues(source_file_path, destination_file_path, key):
-    print(f"Processing: {source_file_path} -> {destination_file_path}")
-
 
     with open(source_file_path, "r") as f:
         puzzle = json.load(f)
 
-    # if puzzle["versions"]['generic']["clues"]["solution_clues_nl"] == []:
-    print(f"Processing: {source_file_path} -> {destination_file_path}")
     for version in ['generic', 'stereotypical', 'anti_stereotypical']:
         nl_clues = []
         version_data = puzzle["versions"].get(version)
@@ -354,22 +341,21 @@ def generate_natural_clues(source_file_path, destination_file_path, key):
 
         for clue in soln_clues:
             clue_type = detect_clue_type(clue)
-            # print(clue_type)
             if clue_type == "True-False":
                 nl_clues.append(true_false_nlt(clue, key).strip())
-                print(true_false_nlt(clue, key))
+                # print(true_false_nlt(clue, key))
             elif clue_type == "Neither-Nor":
                 nl_clues.append(neither_nor_nlt(clue, key).strip())
-                print(neither_nor_nlt(clue, key))
+                # print(neither_nor_nlt(clue, key))
             elif clue_type == "Either-Or":
                 nl_clues.append(either_or_nlt(clue, key).strip())
-                print(either_or_nlt(clue, key))
+                # print(either_or_nlt(clue, key))
             elif clue_type == "Unaligned-Pair":
                 nl_clues.append(unaligned_nlt(clue, key).strip())
-                print(unaligned_nlt(clue, key))
+                # print(unaligned_nlt(clue, key))
             elif clue_type == "Multi-Elimination":
                 nl_clues.append(multi_elimination_nlt(clue, key).strip())
-                print(multi_elimination_nlt(clue, key))
+                # print(multi_elimination_nlt(clue, key))
             else:
                 print(f"Unknown clue: {clue}")
 
