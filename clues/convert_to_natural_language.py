@@ -309,6 +309,8 @@ import os
 import json
 
 def generate_natural_clues(source_file_path, destination_file_path):
+    print(f"Processing: {source_file_path} -> {destination_file_path}")
+
 
     with open(source_file_path, "r") as f:
         puzzle = json.load(f)
