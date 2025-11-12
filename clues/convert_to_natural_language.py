@@ -183,7 +183,7 @@ def either_or_nlt(logic_clue, key):
         return None
 
 
-def unaligned_nlt(logic_clue), key:
+def unaligned_nlt(logic_clue, key):
 
     prompt = f"""
     System:
