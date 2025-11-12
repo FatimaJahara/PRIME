@@ -357,14 +357,19 @@ def generate_natural_clues(source_file_path, destination_file_path, key):
             # print(clue_type)
             if clue_type == "True-False":
                 nl_clues.append(true_false_nlt(clue, key).strip())
+                print(true_false_nlt(clue, key))
             elif clue_type == "Neither-Nor":
                 nl_clues.append(neither_nor_nlt(clue, key).strip())
+                print(neither_nor_nlt(clue, key))
             elif clue_type == "Either-Or":
                 nl_clues.append(either_or_nlt(clue, key).strip())
+                print(either_or_nlt(clue, key))
             elif clue_type == "Unaligned-Pair":
                 nl_clues.append(unaligned_nlt(clue, key).strip())
+                print(unaligned_nlt(clue, key))
             elif clue_type == "Multi-Elimination":
                 nl_clues.append(multi_elimination_nlt(clue, key).strip())
+                print(multi_elimination_nlt(clue, key))
             else:
                 print(f"Unknown clue: {clue}")
 
