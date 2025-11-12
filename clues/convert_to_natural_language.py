@@ -316,6 +316,7 @@ def generate_natural_clues(source_file_path, destination_file_path):
         puzzle = json.load(f)
 
     # if puzzle["versions"]['generic']["clues"]["solution_clues_nl"] == []:
+    print(f"Processing: {source_file_path} -> {destination_file_path}")
     for version in ['generic', 'stereotypical', 'anti_stereotypical']:
         nl_clues = []
         version_data = puzzle["versions"].get(version)
@@ -351,8 +352,9 @@ def generate_natural_clues(source_file_path, destination_file_path):
             print("Stereotypical Clues in Natural Language Form:")
         if version == 'anti_stereotypical':
             print("Anti-stereotypical Clues in Natural Language Form:")
-        for i, clue in nl_clues:
+        for i, clue in enumerate(nl_clues, start=1):
             print(f"{i}. {clue}")
+
             
 
     os.makedirs(os.path.dirname(destination_file_path), exist_ok=True)
@@ -387,6 +389,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.api_key:
-        key = args.api_key  # overwrite default if provided
+        key = args.api_key
+        os.environ["TOGETHER_API_KEY"] = key  # make it available globally
+
 
     process_puzzles_in_folder(args.src, args.dest)
