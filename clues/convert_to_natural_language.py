@@ -313,7 +313,7 @@ def detect_clue_type(clue):
 import os
 import json
 
-def generate_natural_clues(source_file_path, destination_file_path):
+def generate_natural_clues(source_file_path, destination_file_path, key):
     print(f"Processing: {source_file_path} -> {destination_file_path}")
 
 
@@ -377,7 +377,7 @@ def process_puzzles_in_folder(source_dir, destination_dir):
                 rel_path = os.path.relpath(root, source_dir)
                 dest_folder = os.path.join(destination_dir, rel_path)
                 destination_file_path = os.path.join(dest_folder, file)
-                generate_natural_clues(source_file_path, destination_file_path)
+                generate_natural_clues(source_file_path, destination_file_path, key)
 
 # puzzle_directory = ""
 # destination_directory = ""
