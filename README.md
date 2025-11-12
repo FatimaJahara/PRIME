@@ -1,7 +1,9 @@
 # Evaluating Implicit Biases in LLM Reasoning through Logic Grid Puzzles 
-[![Paper](https://img.shields.io/badge/arXiv-2511.06160-B31B1B.svg)](https://arxiv.org/abs/2511.06160)
 
-We introduce PRIME (**P**uzzle **R**easoning for **I**mplicit Biases in **M**odel **E**valuation) a novel evaluation framework that uses [logic grid puzzles](https://en.wikipedia.org/wiki/Logic_puzzle) to systematically probe the influence of social stereotypes on logical reasoning and decision making in LLMs. PRIME includes stereotypical, anti-stereotypical, and generic puzzle variants generated from a shared puzzle structure, allowing for controlled and fine-grained comparisons. Our use of logic puzzles enables automatic generation and verification, as well as variability in complexity and biased settings.
+[![arXiv](https://img.shields.io/badge/arXiv-2511.06160-B31B1B.svg)](https://arxiv.org/abs/2511.06160)  
+
+We introduce **PRIME** (**P**uzzle **R**easoning for **I**mplicit Biases in **M**odel **E**valuation) a novel evaluation framework that uses [logic grid puzzles](https://en.wikipedia.org/wiki/Logic_puzzle) to systematically probe the influence of social stereotypes on logical reasoning and decision making in LLMs. PRIME includes stereotypical, anti-stereotypical, and generic puzzle variants generated from a shared puzzle structure, allowing for controlled and fine-grained comparisons. Our use of logic puzzles enables automatic generation and verification, as well as variability in complexity and biased settings. 
+📄 **[Read the Paper on arXiv →](https://arxiv.org/abs/2511.06160)**
 
 <img width="2619" height="1158" alt="image" src="https://github.com/user-attachments/assets/3529a83e-af42-4771-8d3e-6cfeabdb7c15" />
 
