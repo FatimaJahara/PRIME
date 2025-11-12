@@ -39,7 +39,7 @@ PRIME/                                # Framework for puzzle generation and eval
 ```bash
 python generate_puzzles.py --rows <num_rows> --cols <num_cols> [--out <output_dir>] [--start_id <id>] [--batch <num_puzzles>]
 ```
-**Note:** If the python command doesn’t work on your system, use python3 instead.
+Here:
   ```
 --rows        Number of puzzle rows (must be even)
 --cols        Number of puzzle columns
