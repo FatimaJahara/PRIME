@@ -377,6 +377,7 @@ def generate_natural_clues(source_file_path, destination_file_path, key):
             print("Anti-stereotypical Clues in Natural Language Form:")
         for i, clue in enumerate(nl_clues, start=1):
             print(f"{i}. {clue}")
+        print()
 
             
 
@@ -397,9 +398,6 @@ def process_puzzles_in_folder(source_dir, destination_dir):
                 destination_file_path = os.path.join(dest_folder, file)
                 generate_natural_clues(source_file_path, destination_file_path, key)
 
-# puzzle_directory = ""
-# destination_directory = ""
-# process_puzzles_in_folder(puzzle_directory, destination_directory)
 
 if __name__ == "__main__":
     import argparse
