@@ -11,11 +11,16 @@ def llama_inference(prompt,api_key=key):
     response = client.completions.create(
     temperature=0,
     model= "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-    prompt=f"""<|begin_of_text|><|start_header_id|>system<|end_header_id|>
-You are a helpful assistant<|eot_id|><|start_header_id|>user<|end_header_id|>
-{prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>""",
-    stream=False,)
-    return response.choices[0].text
+    messages=[
+    {
+      "role": "user",
+      "content": f"""<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+        You are a helpful assistant<|eot_id|><|start_header_id|>user<|end_header_id|>
+        {prompt}<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
+    }
+    ]
+    )
+    return response.choices[0].message.content
 
 
 def true_false_nlt(logic_clue):
