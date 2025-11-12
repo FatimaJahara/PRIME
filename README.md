@@ -34,14 +34,15 @@ PRIME/                                # Framework for puzzle generation and eval
 ## Generate PRIME Puzzles
 
 ```bash
-python generate_puzzles.py --rows <num_rows> --cols <num_cols> [--out <output_dir>] [--puzzle_id <id>]
+python generate_puzzles.py --rows <num_rows> --cols <num_cols> [--out <output_dir>] [--start_id <id>] [--batch <num_puzzles>]
 ```
 **Note:** If the python command doesn’t work on your system, use python3 instead.
   ```
-  --rows: Number of puzzle rows (must be even)
-  --cols: Number of puzzle columns
-  --out: (optional) Output directory for saving puzzles (output/ by default)
-  --puzzle_id: (optional) Starting ID for naming puzzles (default: 1)
+--rows        Number of puzzle rows (must be even)
+--cols        Number of puzzle columns
+--out         (optional) Output directory for saving puzzles (default: output/)
+--start_id    (optional) Starting ID for puzzle naming (default: 1)
+--batch       (optional) Number of puzzles to generate (default: 1)
   ```
 
 ### Example Generation
@@ -53,9 +54,17 @@ python generate_puzzles.py --rows 4 --cols 3
 ```bash
 python generate_puzzles.py --rows 4 --cols 3 --out puzzles/
 ```
-**Generate a 4×3 puzzle with a custom puzzle id**
+**Generate a single 4×3 puzzle with a custom starting ID**
 ```bash
-python3 generate_puzzles.py --rows 4 --cols 3 --puzzle_id 10
+python3 generate_puzzles.py --rows 4 --cols 3 --start_id 10
+```
+**Generate a batch of 10 puzzles (4×3 each)**
+```bash
+python generate_puzzles.py --rows 4 --cols 3 --batch 10
+```
+**Generate 50 puzzles starting from ID 101 and save to a custom directory**
+```bash
+python3 generate_puzzles.py --rows 4 --cols 3 --batch 50 --start_id 101 --out data/puzzles/
 ```
 
 ## Output JSON Format
